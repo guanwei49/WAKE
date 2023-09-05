@@ -25,7 +25,7 @@ def detect(encoder,decoder,end2end_decoder,reconstruct_encoder,reconstruct_decod
             mask=mask_c.to(device)
 
             s, enc_output = encoder(Xs)
-            temp_X = decoder(Xs,  s, enc_output)
+            temp_X = decoder(Xs,  s, enc_output,mask)
 
             temp1 = []
             temp2 = []
@@ -48,7 +48,7 @@ def detect(encoder,decoder,end2end_decoder,reconstruct_encoder,reconstruct_decod
             trace_level_abnormal_scores.append(trace_level_abnormal_score.detach().cpu())
 
             s, enc_output = reconstruct_encoder(Xs)
-            reconstruct_X = reconstruct_decoder(Xs, s, enc_output)
+            reconstruct_X = reconstruct_decoder(Xs, s, enc_output,mask)
 
             for attr_index in range(len(attribute_dims)):
                 reconstruct_X[attr_index] = reconstruct_X[attr_index]

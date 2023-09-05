@@ -1,22 +1,22 @@
 import os
 import time
 import traceback
-
-# import mlflow
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import torch
-from matplotlib import pyplot as plt
-from sklearn.metrics import precision_score, recall_score, f1_score,accuracy_score
-from torch.utils.data import DataLoader, WeightedRandomSampler
+from torch.utils.data import DataLoader
+
+from dataset_json import Dataset_json
 from model.detect import detect
 from model.train import train_phase1, train_phase2, train_phase3
 
 from dataset import Dataset
 import torch.utils.data as Data
 
+from utils.eval import cal_best_PRF
+from utils.fs import EVENTLOG_DIR
 
 
 def main(dataset, beta=0.3, batch_size=64, n_epochs_1=10, n_epochs_2=10, n_epochs_3=4, p_lambda=10, lr=0.0002, b1=0.5, b2=0.999, seed=None, enc_hidden_dim = 64, encoder_num_layers = 4, decoder_num_layers=2, dec_hidden_dim = 64):
@@ -93,22 +93,103 @@ def main(dataset, beta=0.3, batch_size=64, n_epochs_1=10, n_epochs_2=10, n_epoch
 
 
 if __name__ == '__main__':
-    attr_keys = ['concept:name', 'org:resource', 'org:role']
+    mode = 'eval'
 
-    ROOT_DIR = Path(__file__).parent
-    logPath = os.path.join(ROOT_DIR, 'BPIC20_PrepaidTravelCost.xes')
-    labelPath = os.path.join(ROOT_DIR, 'labels.npy')
-    dataset = Dataset(logPath, labelPath, attr_keys)
-    trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores = main(dataset,
-                                                                                                beta=0.3,
-                                                                                                batch_size=64,
-                                                                                                n_epochs_1=10,
-                                                                                                n_epochs_2=10,
-                                                                                                n_epochs_3=4,
-                                                                                                lr=0.0002,
-                                                                                                p_lambda=10,
-                                                                                                encoder_num_layers=4,
-                                                                                                decoder_num_layers=2,
-                                                                                                enc_hidden_dim=64,
-                                                                                                dec_hidden_dim=64)
-    print('dddd')
+    if mode != 'eval':
+        attr_keys = ['concept:name', 'org:resource', 'org:role']
+
+        ROOT_DIR = Path(__file__).parent
+        logPath = os.path.join(ROOT_DIR, 'BPIC20_PrepaidTravelCost.xes')
+        labelPath = os.path.join(ROOT_DIR, 'labels.npy')
+        dataset = Dataset(logPath, labelPath, attr_keys)
+        trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores = main(dataset,
+                                                                                                    beta=0.3,
+                                                                                                    batch_size=64,
+                                                                                                    n_epochs_1=14,
+                                                                                                    n_epochs_2=10,
+                                                                                                    n_epochs_3=4,
+                                                                                                    lr=0.0002,
+                                                                                                    p_lambda=10,
+                                                                                                    encoder_num_layers=4,
+                                                                                                    decoder_num_layers=2,
+                                                                                                    enc_hidden_dim=64,
+                                                                                                    dec_hidden_dim=64)
+    else:  # evaluate the method using all the dataset in EVENTLOG_DIR
+        print(EVENTLOG_DIR)
+        dataset_names = os.listdir(EVENTLOG_DIR)
+        dataset_names.sort()
+        dataset_names.remove('cache')
+        print(dataset_names)
+
+        resPath = f'eva_result.csv'
+        for dataset_name in dataset_names:
+            try:
+                print(dataset_name)
+                start_time = time.time()
+                # dataset = Dataset(dataset_name,label_percent=label_percent)
+                dataset = Dataset_json(dataset_name,
+                                       label_percent=0.1)  # The 10% anomalies are treated as labelled anomalies.
+                hidden_dim = 64
+                n_epochs_2 = 10
+                if 'Billing' in dataset_name or 'Declaration' in dataset_name:
+                    hidden_dim = 16
+                if 'Receipt' in dataset_name:
+                    n_epochs_2 = 20
+                trace_level_abnormal_scores, event_level_abnormal_scores, attr_level_abnormal_scores = main(dataset,
+                                                                                                            beta=0.3,
+                                                                                                            batch_size=64,
+                                                                                                            n_epochs_1=14,
+                                                                                                            n_epochs_2=n_epochs_2,
+                                                                                                            n_epochs_3=4,
+                                                                                                            lr=0.0002,
+                                                                                                            p_lambda=10,
+                                                                                                            encoder_num_layers=4,
+                                                                                                            decoder_num_layers=2,
+                                                                                                            enc_hidden_dim=hidden_dim,
+                                                                                                            dec_hidden_dim=hidden_dim)
+
+                end_time = time.time()
+
+                run_time = end_time - start_time
+                print(run_time)
+
+                ##Anomaly Detection
+                trace_truth = dataset.case_target
+                trace_detected = trace_level_abnormal_scores
+                trace_p, trace_r, trace_f1, trace_aupr = cal_best_PRF(trace_truth, trace_detected)
+                print("Anomaly Detection")
+                print(trace_p, trace_r, trace_f1, trace_aupr)  ##precision,recall,F1-score,AP
+
+                ## Interpretation of the Cause of Anomalies
+                attr_truth = dataset.binary_targets[trace_truth.astype('bool')][
+                    ~dataset.mask[trace_truth.astype('bool')]]
+                attr_detected = np.array(attr_level_abnormal_scores)[trace_truth.astype('bool')][
+                    ~dataset.mask[trace_truth.astype('bool')]]
+                attr_p, attr_r, attr_f1, attr_aupr = cal_best_PRF(attr_truth.flatten(),
+                                                                  attr_detected.flatten())
+                print("Interpretation of the Cause of Anomalies")
+                print(attr_p, attr_r, attr_f1, attr_aupr)  ##precision,recall,F1-score,AP
+
+                datanew = pd.DataFrame(
+                    [{'index': dataset_name, 'AD_precision': trace_p, "AD_recall": trace_r, 'AD_f1': trace_f1,
+                      'AD_aupr': trace_aupr,
+                      'IA_precision': attr_p, "IA_recall": attr_r, 'IA_f1': attr_f1, 'IA_aupr': attr_aupr,
+                      'times': run_time,
+                      }])
+                if os.path.exists(resPath):
+                    data = pd.read_csv(resPath)
+                    data = pd.concat([data, datanew], ignore_index=True)
+                else:
+                    data = datanew
+                data.to_csv(resPath, index=False)
+            except:
+                traceback.print_exc()
+                datanew = pd.DataFrame([{'index': dataset_name}])
+                if os.path.exists(resPath):
+                    data = pd.read_csv(resPath)
+                    data = pd.concat([data, datanew], ignore_index=True)
+                else:
+                    data = datanew
+                data.to_csv(resPath, index=False)
+
+

@@ -51,7 +51,7 @@ def train_phase1(clean_dataloader, attribute_dims, n_epochs=10, lr=0.0002, b1=0.
                 Xs[k]=X.to(device)
 
             s,enc_output = encoder(Xs)
-            reconstruct_X = decoder(Xs,s,enc_output)
+            reconstruct_X = decoder(Xs,s,enc_output,mask)
 
             optimizer.zero_grad()
 
@@ -120,7 +120,7 @@ def train_phase2(dataloader, attribute_dims, max_len, encoder, decoder, p_lambda
             labels=labels.to(device)
             mask = mask.to(device)
             s, enc_output = encoder(Xs)
-            reconstruct_X = decoder(Xs,s,enc_output)
+            reconstruct_X = decoder(Xs,s,enc_output,mask)
             temp1 = []
             temp2=[]
             temp3 = []
@@ -204,7 +204,7 @@ def train_phase3(dataloader, attribute_dims, encoder, decoder, n_epochs=5, lr=0.
                 Xs[k] = X.to(device)
 
             s, enc_output = reconstruct_encoder(Xs)
-            reconstruct_X = reconstruct_decoder(Xs, s, enc_output)
+            reconstruct_X = reconstruct_decoder(Xs, s, enc_output,mask)
 
             optimizer.zero_grad()
 
