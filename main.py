@@ -116,6 +116,8 @@ if __name__ == '__main__':
                                                                                                     dec_hidden_dim=64)
     else:  # evaluate the method using all the dataset in EVENTLOG_DIR
         print(EVENTLOG_DIR)
+        if os.path.isdir(os.path.join(EVENTLOG_DIR, 'cache')) == False:
+            os.mkdir(os.path.join(EVENTLOG_DIR, 'cache'))
         dataset_names = os.listdir(EVENTLOG_DIR)
         dataset_names.sort()
         dataset_names.remove('cache')
