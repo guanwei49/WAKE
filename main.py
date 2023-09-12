@@ -93,7 +93,7 @@ def main(dataset, beta=0.3, batch_size=64, n_epochs_1=10, n_epochs_2=10, n_epoch
 
 
 if __name__ == '__main__':
-    mode = 'eval'
+    mode = 'test'
 
     if mode != 'eval':
         attr_keys = ['concept:name', 'org:resource', 'org:role']
