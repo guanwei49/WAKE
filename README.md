@@ -44,7 +44,7 @@ The summary of statistics for each event log is presented below:
 | Receipt        | 27             | 1434       | 8577            | 25                     | 1                   | 2              | 58                 |
 | Sepsis         | 16             | 1050       | 15214           | 185                    | 3                   | 1              | 26                 |
 
-Logs containing 10 % artificial anomalies are provided in the folder '**_eventlogs_**'.
+Logs containing 10% artificial anomalies are provided in the folder '**_eventlogs_**'.
 
 
 ## Requirements
