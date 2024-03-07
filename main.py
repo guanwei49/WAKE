@@ -1,3 +1,4 @@
+import argparse
 import os
 import time
 import traceback
@@ -93,9 +94,12 @@ def main(dataset, beta=0.3, batch_size=64, n_epochs_1=10, n_epochs_2=10, n_epoch
 
 
 if __name__ == '__main__':
-    mode = 'test'
+    parser = argparse.ArgumentParser(description='arg parser')
+    parser.add_argument('--mode', type=str, default='test', help='specify the mode')
 
-    if mode != 'eval':
+    args = parser.parse_args()
+
+    if args.mode != 'eval':
         attr_keys = ['concept:name', 'org:resource', 'org:role']
 
         ROOT_DIR = Path(__file__).parent

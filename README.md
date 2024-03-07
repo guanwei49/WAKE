@@ -2,6 +2,26 @@
 This is the source code of our paper '**WAKE: A Weakly-supervised Business Process Anomaly Detection Framework via a Pre-trained Autoencoder**'.
 ![model](architecture.png)
 
+
+
+## Requirements
+- [PyTorch](https://pytorch.org)
+- [NumPy](https://numpy.org)
+- [scikit-learn](https://scikit-learn.org)
+- [pm4py](https://pm4py.fit.fraunhofer.de/)
+
+
+## Using Our Code
+```
+    python main.py --mode eval
+```
+
+Two modes have been implemented:
+
+_eval_:  Utilizing the anomalous event logs located in the _**eventlogs**_ folder to obtain evaluation results (For reproducibility of the experiments).
+
+_test_: Detecting anomalies in the event log with the 'xes' format and obtaining anomaly detection results (For practical application).
+
 ## Datasets
 Eight commonly used real-life logs:
 
@@ -47,12 +67,6 @@ The summary of statistics for each event log is presented below:
 Logs containing 10% artificial anomalies are provided in the folder '**_eventlogs_**'.
 
 
-## Requirements
-- [PyTorch](https://pytorch.org)
-- [NumPy](https://numpy.org)
-- [scikit-learn](https://scikit-learn.org)
-- [pm4py](https://pm4py.fit.fraunhofer.de/)
-
 ## Experiment Results
 _F−scores_ over synthetic logs where ’AD’ represents weakly supervised business process anomaly detection and ’IA’ represents interpretation of the cause of anomalies.
 
@@ -87,3 +101,15 @@ _F−scores_ over real-life logs where ’AD’ represents weakly supervised bus
 | DevNet  | 0.743±0.004 | -           | 0.528±0.027  | -           | 0.297±0.016 | -           | 0.850±0.011 | -           | 0.595±0.041 | -           | 0.269±0.005 | -           | 0.619±0.005 | -           | 0.863±0.010 | -            |
 | PReNet  | 0.776±0.004 | -           | 0.512±0.061  | -           | 0.315±0.014 | -           | 0.728±0.017 | -           | 0.577±0.017 | -           | 0.260±0.005 | -           | 0.657±0.004 | -           | 0.865±0.011 | -            |
 | FEAWAD  | 0.780±0.018 | -           | 0.457±0.044 | -           | 0.328±0.024 | -           | 0.815±0.020 | -           | 0.563±0.032 | -           | 0.300±0.003 | -           | 0.553±0.035 | -           | 0.847±0.013 | -            |
+
+
+## To Cite Our Paper
+```
+@article{guan2023wake,
+  title={Wake: A weakly supervised business process anomaly detection framework via a pre-trained autoencoder},
+  author={Guan, Wei and Cao, Jian and Zhao, Haiyan and Gu, Yang and Qian, Shiyou},
+  journal={IEEE Transactions on Knowledge and Data Engineering},
+  year={2023},
+  publisher={IEEE}
+}
+```
