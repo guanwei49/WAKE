@@ -1,7 +1,6 @@
 # WAKE: A Weakly-supervised Business Process Anomaly Detection Framework via a Pre-trained Autoencoder
-This is the source code of our paper '**WAKE: A Weakly-supervised Business Process Anomaly Detection Framework via a Pre-trained Autoencoder**'.
+This is the source code of our paper '[**WAKE: A Weakly-supervised Business Process Anomaly Detection Framework via a Pre-trained Autoencoder**](https://ieeexplore.ieee.org/abstract/document/10285076/)'.
 ![model](architecture.png)
-
 
 
 ## Requirements
