@@ -23,12 +23,12 @@ from utils.fs import EVENTLOG_DIR
 def main(dataset, beta=0.3, batch_size=64, n_epochs_1=10, n_epochs_2=10, n_epochs_3=4, p_lambda=10, lr=0.0002, b1=0.5, b2=0.999, seed=None, enc_hidden_dim = 64, encoder_num_layers = 4, decoder_num_layers=2, dec_hidden_dim = 64):
     '''
     :param dataset:  Dataset(class)
-    :param beta: Control the ratio of labeled anomalies to normal samples
+    :param beta: Control the ratio of labeled anomalies to unlabeled samples
     :param batch_size:
     :param n_epochs_1: epoch of pre-training stage
     :param n_epochs_2: epoch of end-to-end  optimization stage
     :param n_epochs_3: epoch of fine-tuning stage
-    :param p_lambda: a hyper-parameter to balance the contributions of two parts to the joint loss functio
+    :param p_lambda: a hyper-parameter to balance the contributions of two parts to the joint loss function
     :param lr: learning rate
     :param b1: adam: decay of first order momentum of gradient
     :param b2: adam: decay of first order momentum of gradient
