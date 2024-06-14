@@ -45,7 +45,7 @@ def main(dataset, beta=0.3, batch_size=64, n_epochs_1=10, n_epochs_2=10, n_epoch
         Xs_clean.append( torch.LongTensor(np.delete(dataset.features[i], dataset.labeled_indices, 0)))
     clean_mask=torch.BoolTensor(np.delete(dataset.mask, dataset.labeled_indices, 0))
     clean_dataset = Data.TensorDataset(*Xs_clean, clean_mask)
-    clean_dataloader = DataLoader(clean_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True,
+    clean_dataloader = DataLoader(clean_dataset, batch_size=batch_size, shuffle=True, num_workers=0, pin_memory=True,
                                   drop_last=True)
     encoder, decoder=train_phase1(clean_dataloader, dataset.attribute_dims,n_epochs_1, lr, b1, b2, seed,
                                 enc_hidden_dim,encoder_num_layers, decoder_num_layers,dec_hidden_dim)
@@ -65,7 +65,7 @@ def main(dataset, beta=0.3, batch_size=64, n_epochs_1=10, n_epochs_2=10, n_epoch
     train_labels=torch.cat((train_labels,torch.ones(len(dataset.labeled_indices)*repeat_times)))
     train_dataset = Data.TensorDataset(*train_Xs,train_mask,train_labels)
 
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size,shuffle=True,num_workers=4,pin_memory=True, drop_last=True)
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size,shuffle=True,num_workers=0,pin_memory=True, drop_last=True)
 
     end2end_decoder = train_phase2(train_dataloader, dataset.attribute_dims, dataset.max_len, encoder, decoder, p_lambda, n_epochs_2, lr, b1, b2, seed, dec_hidden_dim)
 
@@ -76,7 +76,7 @@ def main(dataset, beta=0.3, batch_size=64, n_epochs_1=10, n_epochs_2=10, n_epoch
     labels = torch.LongTensor(dataset.weak_labels)
 
     ori_dataset = Data.TensorDataset(*Xs, mask, labels)
-    ori_dataloader = DataLoader(ori_dataset, batch_size=batch_size, shuffle=True, num_workers=4, pin_memory=True,
+    ori_dataloader = DataLoader(ori_dataset, batch_size=batch_size, shuffle=True, num_workers=0, pin_memory=True,
                                   drop_last=True)
     reconstruct_encoder, reconstruct_decoder = train_phase3(ori_dataloader,dataset.attribute_dims,encoder,decoder, n_epochs_3 ,lr ,b1 ,b2 ,seed)
 
