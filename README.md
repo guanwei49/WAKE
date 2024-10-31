@@ -104,11 +104,14 @@ _F−scores_ over real-life logs where ’AD’ represents weakly supervised bus
 
 ## To Cite Our Paper
 ```
-@article{guan2023wake,
-  title={Wake: A weakly supervised business process anomaly detection framework via a pre-trained autoencoder},
+@ARTICLE{10285076,
   author={Guan, Wei and Cao, Jian and Zhao, Haiyan and Gu, Yang and Qian, Shiyou},
-  journal={IEEE Transactions on Knowledge and Data Engineering},
-  year={2023},
-  publisher={IEEE}
-}
+  journal={IEEE Transactions on Knowledge and Data Engineering}, 
+  title={WAKE: A Weakly Supervised Business Process Anomaly Detection Framework via a Pre-Trained Autoencoder}, 
+  year={2024},
+  volume={36},
+  number={6},
+  pages={2745-2758},
+  keywords={Anomaly detection;Business;Feature extraction;Hidden Markov models;Probabilistic logic;Generators;Data models;Process mining;weakly supervised anomaly detection;deep learning;recurrent neural networks;autoencoder},
+  doi={10.1109/TKDE.2023.3322411}}
 ```
