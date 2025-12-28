@@ -24,21 +24,21 @@ _test_: Detecting anomalies in the event log with the 'xes' format and obtaining
 ## Datasets
 Eight commonly used real-life logs:
 
-i) **_Billing_**: This log contains events that pertain to the billing of medical services provided by a hospital.
+i) **_[Billing](https://doi.org/10.4121/uuid:76c46b83-c930-4798-a1c9-4be94dfeb741)_**: This log contains events that pertain to the billing of medical services provided by a hospital.
 
-ii) **_Receipt_**: This log contains records of the receiving phase of the building permit application process in an anonymous municipality.
+ii) **_[Receipt](https://doi.org/10.4121/12709127.v2)_**: This log contains records of the receiving phase of the building permit application process in an anonymous municipality.
 
-iii) **_Sepsis_**: This log contains events of sepsis cases from a hospital.
+iii) **_[Sepsis](https://doi.org/10.4121/uuid:915d2bfb-7e84-49ad-a286-dc35f063a460)_**: This log contains events of sepsis cases from a hospital.
 
-iv) **_Request_**: This log contains events related to Requests for Payment.
+iv) **_[Request](https://doi.org/10.4121/uuid:895b26fb-6f25-46eb-9e48-0dca26fcd030)_**: This log contains events related to Requests for Payment.
 
-v) **_Prepaid_**: This log contains events related to prepaid travel costs.
+v) **_[Prepaid](https://doi.org/10.4121/uuid:5d2fe5e1-f91f-4a3b-ad9b-9e4126870165)_**: This log contains events related to prepaid travel costs.
 
-vi) **_Loan_**: This log contains events related to the loan application process of a Dutch financial institute.
+vi) **_[Loan](https://doi.org/10.4121/uuid:5f3067df-f10b-45da-b98b-86ae4c7a310b)_**: This log contains events related to the loan application process of a Dutch financial institute.
 
-vii) **_Approval_**: This log contains information for loan and overdraft approvals processes from submission to eventual resolution (approval, cancellation, or rejection).
+vii) **_[Approval](https://doi.org/10.4121/uuid:3926db30-f712-4394-aebc-75976070e91f)_**: This log contains information for loan and overdraft approvals processes from submission to eventual resolution (approval, cancellation, or rejection).
 
-viii) **_Declaration_**: This log contains events related to domestic travel declarations.
+viii) **_[Declaration](https://doi.org/10.4121/uuid:2bbf8f6a-fc50-48eb-aa9e-c4ea5ef7e8c5)_**: This log contains events related to domestic travel declarations.
 
 Eight synthetic logs: i.e., **_Paper_**,  _**P2P**_, **_Small_**, **_Medium_**, **_Large_**, **_Huge_**, **_Gigantic_**, and **_Wide_**.
 
